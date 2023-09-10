@@ -211,33 +211,39 @@ function BindCheckBoxClick(tabId, attrId) {
         var $checkboxdiv = $this.closest('div');
         var totalCount = 0;
         var checkedCount = 0;
+        var h3Tagdiv = $checkboxdiv.prev('h3');
+        //h3Tagdiv.find('span').remove();
         if ($(this).is(':checked')) {
-            AlertMessage("Success", $(this).closest('label').text() + " selected successfully.");
+            AlertMessage("Success", h3Tagdiv.clone().children().remove().end().text() + $(this).closest('label').text() + " selected successfully.");
             //if (tabId == PUR_LST_TAB) {
-                //$checkboxdiv.prev('h3').find('span[class=badge]').html('hello');
-                //console.log($checkboxdiv.prev('span').length);
+            //$checkboxdiv.prev('h3').find('span[class=badge]').html('hello');
+            //console.log($checkboxdiv.prev('span').length);
 
-                //$checkboxdiv.append($parent);
+            //$checkboxdiv.append($parent);
             //}
         } else {
-            AlertMessage("Info", $(this).closest('label').text() + " removed successfully.");
+            AlertMessage("Info", h3Tagdiv.clone().children().remove().end().text() + $(this).closest('label').text() + " removed successfully.");
             //if (tabId == PUR_LST_TAB) {
             //    $checkboxdiv.prepend($parent);
             //}
         }
 
-        if (tabId == USR_LST_TAB) {
-            //BindPurchase();
-            //BindPending();
-        } else if (tabId == PUR_LST_TAB) {
-            totalCount = $checkboxdiv.find('input:checkbox').length;
-            checkedCount = $checkboxdiv.find('input:checkbox:checked').length;
-            $checkboxdiv.prev('h3').find('span[class=badge]').html(checkedCount + '/' + totalCount);
-            //BindPending();
-        } else if (tabId == PEN_LST_TAB) {
-            $(this).parent(".checkbox").fadeOut(500, function () { $(this).remove() });
-            //BindPurchase();
-        }
+        totalCount = $checkboxdiv.find('input:checkbox').length;
+        checkedCount = $checkboxdiv.find('input:checkbox:checked').length;
+        $checkboxdiv.prev('h3').find('span[class=badge]').html(checkedCount + '/' + totalCount);
+
+        //if (tabId == USR_LST_TAB) {
+        //    //BindPurchase();
+        //    //BindPending();
+        //} else if (tabId == PUR_LST_TAB) {
+        //    totalCount = $checkboxdiv.find('input:checkbox').length;
+        //    checkedCount = $checkboxdiv.find('input:checkbox:checked').length;
+        //    $checkboxdiv.prev('h3').find('span[class=badge]').html(checkedCount + '/' + totalCount);
+        //    //BindPending();
+        //} else if (tabId == PEN_LST_TAB) {
+        //    $(this).parent(".checkbox").fadeOut(500, function () { $(this).remove() });
+        //    //BindPurchase();
+        //}
     });
 }
 
@@ -420,9 +426,9 @@ function BindAccordion(accordionCtrl, categoryData, itemData, tabId, attrId) {
                 fs.append('<label class="chk_container col-md-1 col-sm-1">' + this.val + '<input type="checkbox" ' + checked + ' value="' + this.id + '"><span class="checkmark"></span></label>');
             });
             //if (tabId == PUR_LST_TAB) {
-                $(accordionCtrl).append('<h3>' + this.val + ' <span class="badge">' + checkedCount + '/' + arr.length + '</span></h3>');
+            $(accordionCtrl).append('<h3>' + this.val + ' <span class="badge">' + checkedCount + '/' + arr.length + '</span></h3>');
             //} else {
-               // $(accordionCtrl).append('<h3>' + this.val + '</h3>');
+            // $(accordionCtrl).append('<h3>' + this.val + '</h3>');
             //}
 
             $(accordionCtrl).append(fs);
