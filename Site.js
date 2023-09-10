@@ -98,18 +98,9 @@ var USR_ADMN_TAB = '#v_tabs'
 var USR_TAB = '#usr_tabs';
 var ADMN_TAB = "#tabs";
 
-//var USR_LST_ACC = '.accordion';
-//var USR_LST_TAB = '#usr_tabs-1';
-//var USL_LST_ATTR = 'sel';
-
 var USR_LST_ACC = '.old-accordion';
 var USR_LST_TAB = '#v_tabs-2';
 var USL_LST_ATTR = 'sel';
-
-//var PUR_LST_ACC = '.purchase_accordion';
-//var PUR_LST_TAB = '#usr_tabs-2';
-//var PUR_LST_ATTR = 'pur';
-
 
 var PUR_LST_ACC = '.new-accordion';
 var PUR_LST_TAB = '#v_tabs-3';
@@ -123,9 +114,6 @@ var ITM_TBL = 'table_i';
 
 $(document).ready(function () {
     $(USR_ADMN_TAB).tabs();
-    //$(USR_TAB).tabs();
-    //$(ADMN_TAB).tabs();
-
     //Initialize
     Initialize();
 
@@ -134,32 +122,9 @@ $(document).ready(function () {
     //User-Bind-Badge
     BindBadge();
 
-    //Admin-Bind-Category-Grid
-    //BindTable(CAT_TBL, CATEGORY_LSN, 1);
-
-
-    //BindTable(CAT_TBL, OldTestament_LSN, 1);
-
-    //BindTable(CAT_TBL, NewTestament_LSN, 1);
-    //Admin-Bind-Category-Dropdown
-    //BindSelect('categories', CATEGORY_LSN);
-    //Admin-Bind-Item-Grid
-    //BindTable_I(ITM_TBL, CATEGORY_LSN, ITEM_LSN, 1);
-    //Admin-Settings
-    //BindSettings();
-    //Admin-Save-Click
-    //BindSaveButtonClick();
 });
 
-function BindSettings() {
-    var settings = GetLocalStorage(SETTINGS_LSN);
-    $('#sel_page').val(settings.maxPageSize);
-}
-
 function Initialize() {
-    //LoadFromJSON(SETTINGS_LSN);
-    //LoadFromJSON(CATEGORY_LSN);
-    //LoadFromJSON(ITEM_LSN);
     LoadFromJSON(OldTestament_LSN);
     LoadFromJSON(OldChapters);
     LoadFromJSON(NewTestament_LSN);
@@ -172,32 +137,14 @@ function BindUserData() {
     var newTestamentData = GetLocalStorage(NewTestament_LSN);
     var newChaptersData = GetLocalStorage(NewChapters);
 
-    //var categoryData = GetLocalStorage(CATEGORY_LSN);
-    //var itemData = GetLocalStorage(ITEM_LSN);
-    //var oldItemData = $.grep(oldChaptersData, function (a) { return a.sel == 1 });
-    //var newItemData = $.grep(newChaptersData, function (a) { return a.sel == 1 });
-
-    //var purItemData = $.grep(itemData, function (a) { return a.sel == 1 });
-    //var penItemData = $.grep(itemData, function (a) { return a.sel == 1 && a.pur == 0 });
-
     //User-List
     BindAccordion(USR_LST_ACC, oldTestamentData, oldChaptersData, USR_LST_TAB, USL_LST_ATTR);
     BindAccordion(PUR_LST_ACC, newTestamentData, newChaptersData, PUR_LST_TAB, PUR_LST_ATTR);
-
-
-    ////User-Purchase List
-    //BindAccordion(PUR_LST_ACC, categoryData, purItemData, PUR_LST_TAB, PUR_LST_ATTR);
-    ////User-Pending List
-    //BindAccordion(PEN_LST_ACC, categoryData, penItemData, PEN_LST_TAB, PUR_LST_ATTR);
 }
 
 function BindBadge() {
     var listCount, purchasedCount, pendingCount;
 
-    //var itemData = GetLocalStorage(ITEM_LSN);
-    //listCount = $.grep(itemData, function (a) { return a.sel == 1 }).length;
-    //purchasedCount = $.grep(itemData, function (a) { return a.sel == 1 && a.pur == 1 }).length;
-    //pendingCount = $.grep(itemData, function (a) { return a.sel == 1 && a.pur == 0 }).length;
     $(USR_LST_TAB + '-badge').html(listCount);
     $(PUR_LST_TAB + '-badge').html(purchasedCount);
     $(PEN_LST_TAB + '-badge').text(pendingCount);
@@ -231,6 +178,14 @@ function BindCheckBoxClick(tabId, attrId) {
         totalCount = $checkboxdiv.find('input:checkbox').length;
         checkedCount = $checkboxdiv.find('input:checkbox:checked').length;
         $checkboxdiv.prev('h3').find('span[class=badge]').html(checkedCount + '/' + totalCount);
+
+        if (totalCount == checkedCount) {
+            $checkboxdiv.prev('h3').css('background-color', '#00ff00').css('background-image', 'none');
+        } else if (checkedCount > 0) {
+            $checkboxdiv.prev('h3').css('background-color', 'yellow').css('background-image', 'none');
+        } else {
+            $checkboxdiv.prev('h3').removeAttr('style');
+        }
 
         //if (tabId == USR_LST_TAB) {
         //    //BindPurchase();
@@ -425,11 +380,18 @@ function BindAccordion(accordionCtrl, categoryData, itemData, tabId, attrId) {
                 //fs.append('<label class="checkbox-inline"><input type="checkbox" ' + checked + ' value="' + this.id + '">' + this.val + '</label>');
                 fs.append('<label class="chk_container col-md-1 col-sm-1">' + this.val + '<input type="checkbox" ' + checked + ' value="' + this.id + '"><span class="checkmark"></span></label>');
             });
-            //if (tabId == PUR_LST_TAB) {
-            $(accordionCtrl).append('<h3>' + this.val + ' <span class="badge">' + checkedCount + '/' + arr.length + '</span></h3>');
-            //} else {
-            // $(accordionCtrl).append('<h3>' + this.val + '</h3>');
-            //}
+
+
+
+            if (checkedCount == arr.length) {
+                $(accordionCtrl).append('<h3 style=\'background-color:#00ff00; background-image:none\'>' + this.val + ' <span class="badge">' + checkedCount + '/' + arr.length + '</span></h3>');
+
+            } else if (checkedCount > 0) {
+                $(accordionCtrl).append('<h3 style=\'background-color: yellow; background-image:none\'>' + this.val + ' <span class="badge">' + checkedCount + '/' + arr.length + '</span></h3>');
+
+            } else {
+                $(accordionCtrl).append('<h3>' + this.val + ' <span class="badge">' + checkedCount + '/' + arr.length + '</span></h3>');
+            }
 
             $(accordionCtrl).append(fs);
         }
