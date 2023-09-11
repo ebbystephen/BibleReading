@@ -378,7 +378,7 @@ function BindAccordion(accordionCtrl, categoryData, itemData, tabId, attrId) {
                     checked = '';
                 }
                 //fs.append('<label class="checkbox-inline"><input type="checkbox" ' + checked + ' value="' + this.id + '">' + this.val + '</label>');
-                fs.append('<label class="chk_container col-md-1 col-sm-1">' + this.val + '<input type="checkbox" ' + checked + ' value="' + this.id + '"><span class="checkmark"></span></label>');
+                fs.append('<label class="chk_container col-md-2 col-sm-3">' + this.val + '<input type="checkbox" ' + checked + ' value="' + this.id + '"><span class="checkmark"></span></label>');
             });
 
 
